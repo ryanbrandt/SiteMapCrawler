@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Site Map Crawler</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="{{ styles_url }}">
+    </head>
+    <body>
+        <section class="container" align="center">
+            <h1>Site Map Crawler</h1>
+            <p>
+                Simply enter a valid web domain, and we will generate a JSON document representing it's site map
+            </p>
+            <!--- Domain Form --->
+            <section class="col-11 mx-auto form-frame">
+                <form method="POST">
+                    <section class="form-group">
+                        <strong>{{ form.domain.label }}</strong>
+                        {{ form.domain(placeholder='www.YourDomainHere.com', class='form-control', id='domain')}}
+                    </section>
+                    <section class="form-group">
+                        {{ form.submit(class='btn btn-primary') }}
+                    </section>
+                </form>
+            </section>
+            <!--- End Domain Form --->
+            <section class="d-flex justify-content-center">
+                <section class="spinner-grow text-primary" role="status" id="spinner">
+                    <span class="sr-only">Loading...</span>
+                </section>
+            </section>
+            <!--- Result --->
+            <section class="result-frame">
+                <h3>JSON Site Map</h3><hr>
+                <section class="result-container"></section>
+            </section>
+            <!--- End Result --->
+        </section>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="{{ js_url }}"></script>
+    </body>
+</html>
