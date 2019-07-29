@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, url_for, jsonify
 from forms import DomainForm
+from SoupCrawler import SoupCrawler
 import jinja2
 import os
 
@@ -16,35 +17,23 @@ jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir))
 @application.route('/', methods=['GET', 'POST'])
 def index():
     '''
-    Simple index file renderer
-    :return: Rendered index.html
+    Index renderer/site map request handler
+    :return:
+        GET: Rendered index.html
+        POST:
+            Success: Generated site map (see SoupCrawler.site_map)
+            Failure: Failure info, e.g.
+                {"info": "invalid domain!"}
     '''
+    if request.method == 'POST':
+        sc = SoupCrawler(request.get_data('domain').decode('utf-8'))
+        sc.do_crawl(request.get_data('domain'))
+        # TODO unload site map here
+
     template = jinja_env.get_template('index.html')
     form = DomainForm()
 
-    return render_template(template, form=form, styles_url=url_for('static', filename='main.css'), js_url=url_for('static', filename='main.js'), map_url=url_for('make_map'))
-
-
-@application.route('/make-map', methods=['POST'])
-def make_map():
-    '''
-    Handles site crawl/map generation
-    :param domain: String value representing the domain to crawl/generate a map for
-    :return: JSONResponse
-        if domain is valid, JSON document representing the domain's site map in the structure:
-            [
-                {
-                    "page_url": <a_url>,
-                    "links": <all_links_on_page>,
-                    "images:" <all_img_links_on_page>
-                },
-                ...
-            ]
-        if domain invalid: {"info": "Invalid domain"}
-    '''
-    domain = request.get_data('domain')
-
-    return jsonify('hi')
+    return render_template(template, form=form, styles_url=url_for('static', filename='main.css'), js_url=url_for('static', filename='main.js'))
 
 
 if __name__=='__main__':
