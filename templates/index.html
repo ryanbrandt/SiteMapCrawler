@@ -17,7 +17,7 @@
                 <form method="POST">
                     <section class="form-group">
                         <strong>{{ form.domain.label }}</strong>
-                        {{ form.domain(placeholder='www.YourDomainHere.com', class='form-control', id='domain')}}
+                        {{ form.domain(placeholder='https://www.YourDomainHere.com', class='form-control', id='domain')}}
                     </section>
                     <section class="form-group">
                         {{ form.submit(class='btn btn-primary') }}
@@ -33,7 +33,7 @@
             <!--- Result --->
             <section class="result-frame">
                 <h3>JSON Site Map</h3><hr>
-                <section class="result-container"></section>
+                <section class="result-container" id="resContainer"></section>
             </section>
             <!--- End Result --->
         </section>

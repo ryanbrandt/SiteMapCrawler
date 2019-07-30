@@ -20,15 +20,13 @@ def index():
     Index renderer/site map request handler
     :return:
         GET: Rendered index.html
-        POST:
-            Success: Generated site map (see SoupCrawler.site_map)
-            Failure: Failure info, e.g.
-                {"info": "invalid domain!"}
+        POST: JSON: generated site map (see SoupCrawler.site_map)
     '''
     if request.method == 'POST':
         sc = SoupCrawler(request.get_data('domain').decode('utf-8'))
-        sc.do_crawl(request.get_data('domain'))
-        # TODO unload site map here
+        sc.do_crawl(sc.domain)
+
+        return jsonify(sc.site_map)
 
     template = jinja_env.get_template('index.html')
     form = DomainForm()
@@ -36,6 +34,6 @@ def index():
     return render_template(template, form=form, styles_url=url_for('static', filename='main.css'), js_url=url_for('static', filename='main.js'))
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     port = int(os.environ.get('PORT', '8080'))
     application.run(host='0.0.0.0', port=port)
