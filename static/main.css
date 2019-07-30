@@ -22,3 +22,8 @@
     flex-direction: column;
     max-height: 50vh;
 }
+
+#hangMessage {
+    display: none;
+    font-style: italic;
+}

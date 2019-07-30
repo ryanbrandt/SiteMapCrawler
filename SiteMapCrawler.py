@@ -6,8 +6,8 @@ import os
 
 application = Flask(__name__)
 application.config.update(dict(
-    SECRET_KEY="powerful secretkey",
-    WTF_CSRF_SECRET_KEY="a csrf secret key"
+    SECRET_KEY=os.environ['SUPER_SECRET_SECRET_KEY'],
+    WTF_CSRF_SECRET_KEY=os.environ['SUPER_SECRET_CSRF_SECRET_KEY']
 ))
 
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
@@ -23,8 +23,16 @@ def index():
         POST: JSON: generated site map (see SoupCrawler.site_map)
     '''
     if request.method == 'POST':
-        sc = SoupCrawler(request.get_data('domain').decode('utf-8'))
-        sc.do_crawl(sc.domain)
+        sc = SoupCrawler(request.json['domain'])
+        # call appropriate method based on algorithm
+        if request.json['algorithm'] == 'df':
+            # if a max_depth selected by user
+            if request.json['max_depth'] != '':
+                sc.df_crawl(sc.domain, 0, int(request.json['max_depth']))
+            else:
+                sc.df_crawl(sc.domain)
+        else:
+            sc.bf_crawl()
 
         return jsonify(sc.site_map)
 

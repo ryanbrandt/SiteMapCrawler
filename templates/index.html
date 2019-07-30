@@ -1,14 +1,14 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-        <title>Site Map Crawler</title>
+        <title>Site Map Generator</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="{{ styles_url }}">
     </head>
     <body>
         <section class="container" align="center">
-            <h1>Site Map Crawler</h1>
+            <h1>Site Map Generator</h1>
             <p>
                 Simply enter a valid web domain, and we will generate a JSON document representing it's site map
             </p>
@@ -18,6 +18,14 @@
                     <section class="form-group">
                         <strong>{{ form.domain.label }}</strong>
                         {{ form.domain(placeholder='https://www.YourDomainHere.com', class='form-control', id='domain')}}
+                    </section>
+                    <section class="form-group">
+                        <strong>{{ form.algorithm.label }}</strong>
+                        {{ form.algorithm(class='form-control', id='algorithm')}}
+                    </section>
+                    <section class="form-group" id="depthField">
+                        <strong>{{ form.max_depth.label }}</strong>
+                        {{ form.max_depth(class='form-control', id='maxDepth', type='number')}}
                     </section>
                     <section class="form-group">
                         {{ form.submit(class='btn btn-primary') }}
@@ -30,6 +38,7 @@
                     <span class="sr-only">Loading...</span>
                 </section>
             </section>
+            <small id="hangMessage">This may take a while for larger domains</small>
             <!--- Result --->
             <section class="result-frame">
                 <h3>JSON Site Map</h3><hr>
